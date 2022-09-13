@@ -3,13 +3,7 @@ def step1():
         'Утка-маляр 🦆 решила выпить зайти в бар. '
         'Взять ей зонтик? ☂️'
     )
-    option = ''
-    options = {'да': True, 'нет': False}
-    while option not in options:
-        print('Выберите: {}/{}'.format(*options))
-        option = input().lower()
-
-    if options[option]:
+    if choice('да', 'нет'):
         return step2_umbrella()
     return step2_no_umbrella()
 
@@ -19,13 +13,7 @@ def step2_umbrella():
     print(
         'Поехать утке 🦆 на метро, или полететь?'
     )
-    option = ''
-    options = {'на метро': True, 'полететь': False}
-    while option not in options:
-        print('Выберите: {}/{}'.format(*options))
-        option = input().lower()
-
-    if options[option]:
+    if choice('на метро', 'полететь'):
         return step3_umbrella_metro()
     return step3_umbrella_fly()
 
@@ -35,13 +23,7 @@ def step2_no_umbrella():
     print(
         'Поехать утке 🦆 на метро, или полететь?'
     )
-    option = ''
-    options = {'на метро': True, 'полететь': False}
-    while option not in options:
-        print('Выберите: {}/{}'.format(*options))
-        option = input().lower()
-
-    if options[option]:
+    if choice('на метро', 'полететь'):
         return step3_no_umbrella_metro()
     return step3_no_umbrella_fly()
 
@@ -75,6 +57,16 @@ def step3_no_umbrella_fly():
         'Утка 🦆 попала под ливень и вернулась'
     )
     return step1()
+
+
+def choice(first_option, second_option):
+    """Функция выбора одной из двух опций"""
+    option = ''
+    options = {first_option: True, second_option: False}
+    while option not in options:
+        print('Выберите: {}/{}'.format(*options))
+        option = input().lower()
+    return options[option]
 
 
 if __name__ == '__main__':
