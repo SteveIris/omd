@@ -1,18 +1,18 @@
 import csv
 
 
-def menu():
+def menu() -> None:
     """Выводит меню выбора команды"""
     option = ''
-    options = {'1': first_option, '2': second_option, '3': third_option, 'Закрыть': close, 'Котик': cat}
+    options = {'1': show_teams_hierarchy, '2': show_summary, '3': save_summary, 'Закрыть': close, 'Котик': cat}
     while option not in options:
         print('Выберите команду: {}/{}/{}/{}'.format(*options))
         option = input()
     options[option]()
 
 
-def first_option():
-    """Реализует первую команду"""
+def show_teams_hierarchy() -> None:
+    """Выводит иерархию команд"""
     data = open_file('Corp_Summary.csv')
     departments = {}
 
@@ -29,8 +29,8 @@ def first_option():
     menu()
 
 
-def second_option():
-    """Реализует вторую команду"""
+def show_summary() -> None:
+    """Выводит сводный отчёт по департаментам"""
     departments = create_summary()
 
     print('Департаменты:')
@@ -50,25 +50,25 @@ def second_option():
     menu()
 
 
-def third_option():
-    """Реализует третью команду"""
+def save_summary() -> None:
+    """Сохраняет сводный отчёт по департаментам"""
     save_as_csv(create_summary())
     menu()
 
 
-def save_as_csv(departments: dict):
+def save_as_csv(departments: dict) -> None:
     """Сохраняет в csv-файл сводный отчёт"""
     with open('Departments_summary.csv', 'w', encoding='utf8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['Название', 'Численность', 'Минимальная зп', 'Максимальная зп', 'Средняя зп'])
         for department in departments:
-            writer.writerow([department]+list(departments[department].values()))
+            writer.writerow([department] + list(departments[department].values()))
     print('Отчёт записан в файл Departments_summary.csv')
     return
 
 
 def create_summary() -> dict:
-    """Создаёт сводный отчёт по департаментам для команд 2 и 3"""
+    """Создаёт сводный отчёт по департаментам для команд 2 и 3 и возвращает его"""
     data = open_file('Corp_Summary.csv')
     departments = {}
 
@@ -85,11 +85,14 @@ def create_summary() -> dict:
             if int(line[5]) > departments[line[1]]['Максимальная зп']:
                 departments[line[1]]['Максимальная зп'] = salary
     for department in departments:
-        departments[department]['Средняя зп'] = round(departments[department]['Средняя зп']/departments[department]['Численность'], 1)
+        departments[department]['Средняя зп'] = round(
+            departments[department]['Средняя зп']/departments[department]['Численность'],
+            1,
+        )
     return departments
 
 
-def close():
+def close() -> None:
     """Закрывает программу"""
     quit()
 
@@ -103,7 +106,8 @@ def open_file(file_path: str) -> list:
     return data_read
 
 
-def cat():
+def cat() -> None:
+    """Выводит котика"""
     print("""             *     ,MMM8&&&.            *
                   MMMM88&&&&&    .
                  MMMM88&&&&&&&
