@@ -2,6 +2,7 @@ import json
 
 
 class ColorizeMixin:
+    """Миксин для раскраски текста"""
 
     def colorize_text(self, color, text):
         color_str = str(color)
@@ -9,6 +10,7 @@ class ColorizeMixin:
 
 
 class AdvertWithoutConditions:
+    """Преобразует словарь в python-объект с доступом к атрибутам через точку. Не накладывает ограничений на данные"""
     def __init__(self, advertisement):
 
         for attribute in advertisement:
@@ -19,6 +21,7 @@ class AdvertWithoutConditions:
 
 
 class Advert(ColorizeMixin, AdvertWithoutConditions):
+    """Преобразует словарь в python-объект с доступом к атрибутам через точку. Требует price>=0 и наличия title"""
     repr_color_code = 33
 
     def __init__(self, advertisement):
@@ -26,6 +29,7 @@ class Advert(ColorizeMixin, AdvertWithoutConditions):
         self.check_correctness()
 
     def check_correctness(self):
+        """Проверка на то, что введён title и price>=0"""
         if not hasattr(self, 'title'):
             print("Error: must have title")
             exit(0)
@@ -37,7 +41,8 @@ class Advert(ColorizeMixin, AdvertWithoutConditions):
             self.price = 0
 
     def __repr__(self):
-        return self.colorize_text(self.repr_color_code, f' {self.title} | {self.price} ₽')
+        """Выводит название и цену из объявления"""
+        return self.colorize_text(Advert.repr_color_code, f' {self.title} | {self.price} ₽')
 
 
 def main():
@@ -55,6 +60,20 @@ def main():
     print(lesson_ad.price)
     print(lesson_ad.location.address)
     print(lesson_ad)
+    korgi_str = """{
+    "title": "Вельш-корги",
+    "price": 1000,
+    "class": "dogs",
+    "location": {
+    "address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
+    }
+    }"""
+    korgi = json.loads(korgi_str)
+    korgi_ad = Advert(korgi)
+    print(korgi_ad.title)
+    print(korgi_ad.price)
+    print(korgi_ad.location.address)
+    print(korgi_ad)
 
 
 if __name__ == '__main__':
