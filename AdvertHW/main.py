@@ -1,4 +1,5 @@
 import json
+import keyword
 
 
 class ColorizeMixin:
@@ -14,10 +15,14 @@ class AdvertWithoutConditions:
     def __init__(self, advertisement: dict):
 
         for attribute in advertisement:
-            if isinstance(advertisement[attribute], dict):
-                setattr(self, attribute, AdvertWithoutConditions(advertisement[attribute]))
+            if keyword.iskeyword(attribute):
+                attribute_not_key = attribute+'_'
             else:
-                setattr(self, attribute, advertisement[attribute])
+                attribute_not_key = attribute
+            if isinstance(advertisement[attribute], dict):
+                setattr(self, attribute_not_key, AdvertWithoutConditions(advertisement[attribute]))
+            else:
+                setattr(self, attribute_not_key, advertisement[attribute])
         return
 
 
@@ -76,6 +81,7 @@ def main():
     }
     }"""
     test(korgi_str)
+
     no_price_str = """{
         "title": ":)",
         "price": -2,
